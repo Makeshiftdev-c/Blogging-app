@@ -7,6 +7,14 @@ const csrf = require("csurf");
 const server = express();
 const sanitizeHTML = require("sanitize-html");
 
+if (process.env.NODE_ENV === "production") {
+  server.use((req, res, next) => {
+    if (req.header("x-forwarded-proto") !== "https")
+      res.redirect(`https://${req.header("host")}${req.url}`);
+    else next();
+  });
+}
+
 server.use(express.urlencoded({ extended: false }));
 server.use(express.json());
 
