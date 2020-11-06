@@ -1,6 +1,7 @@
 const User = require("../models/User");
 const Post = require("../models/Post");
 const Follow = require("../models/Follow");
+const Like = require("../models/Like");
 const jwt = require("jsonwebtoken");
 
 exports.login = function (req, res) {
@@ -130,6 +131,7 @@ exports.profilePostsScreen = function (req, res) {
         isVisitorsProfile: req.isVisitorsProfile,
         counts: {
           postCount: req.postCount,
+          likeCount: req.likeCount,
           followerCount: req.followerCount,
           followingCount: req.followingCount,
         },
@@ -138,6 +140,28 @@ exports.profilePostsScreen = function (req, res) {
     .catch(() => {
       res.render("404");
     });
+};
+
+exports.profileLikesScreen = async function (req, res) {
+  try {
+    let likes = await Like.getLikedById(req.profileUser._id);
+    res.render("profile-liking", {
+      currentPage: "liking",
+      likes: likes,
+      profileUsername: req.profileUser.username,
+      profileAvatar: req.profileUser.avatar,
+      isFollowing: req.isFollowing,
+      isVisitorsProfile: req.isVisitorsProfile,
+      counts: {
+        postCount: req.postCount,
+        likeCount: req.likeCount,
+        followerCount: req.followerCount,
+        followingCount: req.followingCount,
+      },
+    });
+  } catch {
+    res.render("404");
+  }
 };
 
 exports.profileFollowersScreen = async function (req, res) {
@@ -152,6 +176,7 @@ exports.profileFollowersScreen = async function (req, res) {
       isVisitorsProfile: req.isVisitorsProfile,
       counts: {
         postCount: req.postCount,
+        likeCount: req.likeCount,
         followerCount: req.followerCount,
         followingCount: req.followingCount,
       },
@@ -173,6 +198,7 @@ exports.profileFollowingScreen = async function (req, res) {
       isVisitorsProfile: req.isVisitorsProfile,
       counts: {
         postCount: req.postCount,
+        likeCount: req.likeCount,
         followerCount: req.followerCount,
         followingCount: req.followingCount,
       },
@@ -198,14 +224,22 @@ exports.sharedProfileData = async function (req, res, next) {
 
   // retrieve post, follower, and following counts
   let postCountPromise = Post.countPostsByAuthor(req.profileUser._id);
+  let likeCountPromise = Like.countLikesById(req.profileUser._id);
   let followerCountPromise = Follow.countFollowersById(req.profileUser._id);
   let followingCountPromise = Follow.countFollowingById(req.profileUser._id);
-  let [postCount, followerCount, followingCount] = await Promise.all([
+  let [
+    postCount,
+    likeCount,
+    followerCount,
+    followingCount,
+  ] = await Promise.all([
     postCountPromise,
+    likeCountPromise,
     followerCountPromise,
     followingCountPromise,
   ]);
   req.postCount = postCount;
+  req.likeCount = likeCount;
   req.followerCount = followerCount;
   req.followingCount = followingCount;
 

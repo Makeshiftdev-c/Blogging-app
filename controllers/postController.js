@@ -1,4 +1,21 @@
 const Post = require("../models/Post");
+const Like = require("../models/Like");
+
+exports.sharedPostData = function (req, res, next) {
+  Post.findSingleById(req.params.id, req.visitorId)
+    .then(async (postDocument) => {
+      let isLiking = false;
+      if (req.session.user) {
+        isLiking = await Like.isVisitorLiking(postDocument._id, req.visitorId);
+      }
+
+      req.isLiking = isLiking;
+      next();
+    })
+    .catch(() => {
+      res.render("404");
+    });
+};
 
 exports.viewCreateScreen = function (req, res) {
   res.render("create-post");
@@ -35,7 +52,12 @@ exports.apiCreate = function (req, res) {
 exports.viewSingle = async function (req, res) {
   try {
     let post = await Post.findSingleById(req.params.id, req.visitorId);
-    res.render("single-post-screen", { post: post, title: post.title });
+    res.render("single-post-screen", {
+      post: post,
+      title: post.title,
+      user: req.session.user,
+      isLiking: req.isLiking,
+    });
   } catch {
     res.render("404");
   }

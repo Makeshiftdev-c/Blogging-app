@@ -1,7 +1,7 @@
 {
-  "name": "blogging-app",
+  "name": "blogbox",
   "version": "1.0.0",
-  "description": "",
+  "description": "blogging/social media web application",
   "main": "server.js",
   "scripts": {
     "watch": "nodemon db --ignore frontend-js --ignore public/ & webpack --watch",

@@ -1,10 +1,52 @@
+html {
+  position: relative;
+  min-height: 100vh;
+}
+
 body,
 .tooltip {
   font-family: "Open Sans", sans-serif;
 }
 
+/* */
+body {
+  height: 100vh;
+  margin: 0;
+}
+
+header {
+  min-height: auto;
+}
+footer {
+  min-height: 50px;
+}
+
+/* Trick */
+body {
+  display: flex;
+  flex-direction: column;
+}
+
+footer {
+  margin-top: auto;
+}
+
+/* */
+
 .gold {
   color: goldenrod;
+}
+
+a.text-success:focus {
+  color: #28a745 !important;
+}
+
+a.text-success:focus:hover {
+  color: #1e7e34 !important;
+}
+
+.fa-info-circle {
+  margin-bottom: -0.5px;
 }
 
 .list-group-item.active {
@@ -52,6 +94,16 @@ body,
 .form-control-title {
   font-size: 2rem;
   font-weight: 500;
+}
+
+.form-control-error:focus {
+  outline-color: red;
+  box-shadow: 0 0 0 0.2rem rgba(255, 0, 0, 0.335);
+}
+
+.form-control-success:focus {
+  outline-color: green;
+  box-shadow: 0 0 0 0.2rem rgba(72, 255, 0, 0.411);
 }
 
 .body-content {
@@ -145,6 +197,14 @@ textarea.tall-textarea {
   }
 }
 
+.like-post-button {
+  cursor: pointer;
+  background: none;
+  border: none;
+  padding: 0;
+  margin: 0;
+}
+
 .delete-post-button {
   cursor: pointer;
   background: none;
@@ -191,7 +251,8 @@ textarea.tall-textarea {
   font-size: 1.1rem;
   outline: none;
   flex: 1;
-  color: goldenrod;
+  color: white;
+  text-shadow: 0px 0px 2px gold;
 }
 
 .live-search-results {
@@ -206,7 +267,7 @@ textarea.tall-textarea {
 }
 
 .search-overlay-top {
-  background-color: #fff;
+  background-color: #292929;
   /* background-color: rgba(0, 0, 0, .79); */
 }
 
@@ -286,6 +347,59 @@ textarea.tall-textarea {
 }
 
 /* End Search Overlay */
+
+/* Start of Likes Modal */
+
+.modal-header {
+  background-color: #292929;
+  color: gold;
+  font-size: 1.5rem;
+  align-items: center;
+}
+
+.modal-header-close {
+  opacity: 0.7;
+  cursor: pointer;
+  padding: 1rem;
+  margin: -1rem -1rem -1rem auto;
+  line-height: 1;
+
+  background-color: transparent;
+  border: 0;
+  outline: none !important;
+}
+
+.modal-header-close:hover {
+  color: gold;
+  opacity: 1;
+}
+
+.circle-loader-modal {
+  opacity: 0;
+  transition: opacity 0.45s ease-out /*, visibility 0.45s ease-out*/;
+  /*visibility: hidden;*/
+  display: none;
+  box-sizing: border-box;
+  margin: 0 auto;
+  width: 65px;
+  height: 65px;
+  border-radius: 100%;
+  border: 10px solid rgba(73, 80, 87, 0.2);
+  border-top-color: goldenrod /*#495057*/;
+  will-change: -webkit-transform, transform;
+  -webkit-transform: rotate(0deg);
+  transform: rotate(0deg);
+  -webkit-animation: spin 1s infinite linear;
+  animation: spin 1s infinite linear;
+}
+
+.circle-loader-modal--visible {
+  /*visibility: visible;*/
+  display: block;
+  opacity: 1;
+}
+
+/* End of Likes Modal */
 
 /* Chat */
 .chat-wrapper {

@@ -150,6 +150,7 @@ export default class RegistrationForm {
             this.username.isUnique = false;
           } else {
             this.username.isUnique = true;
+            this.showValidationSuccessCue(this.username);
           }
         })
         .catch(() => {
@@ -178,6 +179,7 @@ export default class RegistrationForm {
             );
           } else {
             this.email.isUnique = true;
+            this.showValidationSuccessCue(this.email);
             this.hideValidationError(this.email);
           }
         })
@@ -193,16 +195,29 @@ export default class RegistrationForm {
         this.password,
         "Password must be at least 8 characters."
       );
+    } else {
+      this.showValidationSuccessCue(this.password);
     }
   }
 
+  showValidationSuccessCue(element) {
+    element.classList.add("form-control-success");
+  }
+
+  hideValidationSuccessCue(element) {
+    element.classList.remove("form-control-success");
+  }
+
   showValidationError(element, message) {
+    this.hideValidationSuccessCue(element);
+    element.classList.add("form-control-error");
     element.nextElementSibling.innerHTML = message;
     element.nextElementSibling.classList.add("liveValidateMessage--visible");
     element.errors = true;
   }
 
   hideValidationError(element) {
+    element.classList.remove("form-control-error");
     element.nextElementSibling.classList.remove("liveValidateMessage--visible");
   }
 

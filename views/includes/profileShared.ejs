@@ -33,6 +33,11 @@
     >Posts: <%= counts.postCount %></a
   >
   <a
+    href="/profile/<%= profileUsername %>/liking"
+    class="profile-nav-link nav-item nav-link <%= currentPage == 'liking' ? 'active' : '' %>"
+    >Liked: <%= counts.likeCount %></a
+  >
+  <a
     href="/profile/<%= profileUsername %>/followers"
     class="profile-nav-link nav-item nav-link <%= currentPage == 'followers' ? 'active' : '' %>"
     >Followers: <%= counts.followerCount %></a

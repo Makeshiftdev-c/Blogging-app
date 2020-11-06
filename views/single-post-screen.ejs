@@ -6,7 +6,22 @@
   <div class="d-flex justify-content-between">
     <h2><%= post.title %></h2>
     <% if (post.isVisitorOwner) { %>
-    <span class="pt-2">
+    <span id="user-post-interface" class="pt-2">
+      <span
+        class="mr-2 modalBtn-wrapper"
+        title="See who's liked the post"
+        data-toggle="tooltip"
+        data-placement="top"
+        data-trigger="hover"
+      >
+        <a
+          href="#"
+          class="text-success"
+          id="info-icon"
+          data-toggle="modal"
+          data-target="#exampleModalLong"
+          ><i class="fas fa-info-circle"></i></a
+      ></span>
       <a
         href="/post/<%= post._id %>/edit"
         class="text-primary mr-2"
@@ -31,7 +46,59 @@
         </button>
       </form>
     </span>
-    <% } %>
+    <% } else { %> <% if (user) { %>
+    <span id="visitor-post-interface" class="pt-2">
+      <!-- Like Button Section -->
+      <% if (!isLiking) { %>
+      <form
+        class="like-post-form d-inline mr-2"
+        action="/post/<%= post._id %>/like"
+        method="POST"
+      >
+        <input type="hidden" name="_csrf" value="<%= csrfToken %>" />
+        <button
+          class="like-post-button gold"
+          data-toggle="tooltip"
+          data-placement="top"
+          title="Like"
+        >
+          <i class="fas fa-thumbs-up"></i>
+        </button>
+      </form>
+      <% } else { %>
+      <form
+        class="unlike-post-form d-inline mr-2"
+        action="/post/<%= post._id %>/removeLike"
+        method="POST"
+      >
+        <input type="hidden" name="_csrf" value="<%= csrfToken %>" />
+        <button
+          class="like-post-button text-danger"
+          data-toggle="tooltip"
+          data-placement="top"
+          title="Unlike"
+        >
+          <i class="fas fa-thumbs-up"></i>
+        </button>
+      </form>
+      <% } %>
+      <span
+        class="modalBtn-wrapper"
+        title="See who's liked the post"
+        data-toggle="tooltip"
+        data-placement="top"
+        data-trigger="hover"
+      >
+        <a
+          href="#"
+          class="text-success"
+          id="info-icon"
+          data-toggle="modal"
+          data-target="#exampleModalLong"
+          ><i class="fas fa-info-circle"></i></a
+      ></span>
+    </span>
+    <% } %> <% } %>
   </div>
 
   <p class="text-muted small mb-4">

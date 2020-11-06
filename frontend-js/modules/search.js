@@ -91,7 +91,9 @@ export default class Search {
     if (posts.length) {
       this.resultsArea.innerHTML = DOMPurify.sanitize(`<div class="list-group shadow-sm">
             <div class="list-group-item active"><strong>Search Results</strong> (${
-              posts.length > 1 ? `${posts.length} items` : "1 item"
+              posts.length > 1
+                ? `<span class="gold">${posts.length} items</span>`
+                : "<span class='gold'>1 item</span>"
             } found)</div>
             ${posts
               .map((post) => {
@@ -124,9 +126,9 @@ export default class Search {
       `<div class="search-overlay">
     <div class="search-overlay-top shadow-sm">
       <div class="container container--narrow">
-        <label for="live-search-field" class="search-overlay-icon"><i class="fas fa-search gold"></i></label>
+        <label for="live-search-field" class="search-overlay-icon"><i class="fas fa-search"></i></label>
         <input type="text" id="live-search-field" class="live-search-field" placeholder="What are you interested in?">
-        <span class="close-live-search"><i class="fas fa-times-circle"></i></span>
+        <span class="close-live-search"><i class="fas fa-times-circle gold"></i></span>
       </div>
     </div>
 

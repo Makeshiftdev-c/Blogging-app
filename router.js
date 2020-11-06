@@ -3,6 +3,7 @@ const router = express.Router();
 const userController = require("./controllers/userController");
 const postController = require("./controllers/postController");
 const followController = require("./controllers/followController");
+const likeController = require("./controllers/likeController");
 
 //user related routes
 router.get("/", userController.home);
@@ -18,6 +19,12 @@ router.get(
   userController.ifUserExists,
   userController.sharedProfileData,
   userController.profilePostsScreen
+);
+router.get(
+  "/profile/:username/liking",
+  userController.ifUserExists,
+  userController.sharedProfileData,
+  userController.profileLikesScreen
 );
 router.get(
   "/profile/:username/followers",
@@ -43,7 +50,11 @@ router.post(
   userController.mustBeLoggedIn,
   postController.create
 );
-router.get("/post/:id", postController.viewSingle);
+router.get(
+  "/post/:id",
+  postController.sharedPostData,
+  postController.viewSingle
+);
 router.get(
   "/post/:id/edit",
   userController.mustBeLoggedIn,
@@ -72,5 +83,18 @@ router.post(
   userController.mustBeLoggedIn,
   followController.removeFollow
 );
+
+//like related routes
+router.post(
+  "/post/:id/like",
+  userController.mustBeLoggedIn,
+  likeController.addLike
+);
+router.post(
+  "/post/:id/removeLike",
+  userController.mustBeLoggedIn,
+  likeController.removeLike
+);
+router.post("/getLikers", likeController.getLikeUsers);
 
 module.exports = router;
