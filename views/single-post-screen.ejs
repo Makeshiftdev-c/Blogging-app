@@ -82,6 +82,22 @@
         </button>
       </form>
       <% } %>
+      <!-- comment button -->
+      <span
+        class="modalBtn-wrapper mr-2"
+        title="Comment"
+        data-toggle="tooltip"
+        data-placement="top"
+        data-trigger="hover"
+      >
+        <a
+          href="#"
+          class="text-primary"
+          id="comment-icon"
+          data-toggle="collapse"
+          data-target="#collapseExample"
+          ><i class="fas fa-comment"></i></a
+      ></span>
       <span
         class="modalBtn-wrapper"
         title="See who's liked the post"
@@ -113,7 +129,9 @@
     %>/<%= post.createdDate.getFullYear() %>
   </p>
 
-  <div class="body-content"><%- filterUserHTML(post.body) %></div>
+  <div class="body-content mb-5"><%- filterUserHTML(post.body) %></div>
+
+  <%- include('includes/comments') %>
 </div>
 
 <%- include('includes/footer') %>

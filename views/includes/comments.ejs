@@ -1,0 +1,115 @@
+<!-- Comments -->
+<div
+  class="<%= !commentCount ? 'collapse' : '' %>"
+  id="<%= !commentCount ? 'collapseExample' : '' %>"
+>
+  <div class="d-flex justify-content-between">
+    <h3>Comments:</h3>
+    <span class="text-muted small pt-2">
+      <%= commentCount == 1 ? "1 Comment" : `${commentCount} Comments` %>
+    </span>
+  </div>
+  <hr />
+</div>
+<!-- comment input section -->
+<div class="create-comment-wrapper collapse" id="collapseExample">
+  <div class="container">
+    <form
+      class="form-inline"
+      action="/post/<%= post._id %>/addComment"
+      method="POST"
+    >
+      <textarea
+        id="create-comment-field"
+        required
+        name="body"
+        type="text"
+        placeholder="Write your comment here!"
+        class="pb-cmnt-textarea mb-1"
+      ></textarea>
+      <input type="hidden" name="_csrf" value="<%= csrfToken %>" />
+      <button class="btn btn-primary">Share</button>
+    </form>
+  </div>
+</div>
+<div class="list-group mb-3">
+  <!-- comment list -->
+  <% comments.forEach((comment) => { %>
+  <div class="list-group-item list-group-item-action mt-3">
+    <div class="d-flex justify-content-between pl-3 pr-3">
+      <a href="/profile/<%= comment.author %>">
+        <img class="avatar-small" src="<%= comment.avatar %>" />
+      </a>
+      <span class="text-muted small pt-1"
+        >by
+        <a href="/profile/<%= comment.author %>"><%= comment.author %></a> on
+        <%= comment.createdDate.getDate() %>/<%= comment.createdDate.getMonth()
+        + 1 %>/<%= comment.createdDate.getFullYear() %></span
+      >
+      <% if (comment.isVisitorsComment) { %>
+      <span id="comment-interface">
+        <span>
+          <a
+            id="edit-comment"
+            class="text-primary mr-2 edit-comment"
+            data-toggle="collapse"
+            href="#collapse<%= comment._id %>"
+            role="button"
+            aria-expanded="false"
+            aria-controls="collapse<%= comment._id %>"
+            ><i class="fas fa-edit"></i></a
+        ></span>
+        <form
+          class="delete-post-form d-inline"
+          action="/post/<%= post._id %>/<%= comment._id %>/removeComment"
+          method="POST"
+        >
+          <input type="hidden" name="_csrf" value="<%= csrfToken %>" />
+          <button
+            class="delete-post-button text-danger"
+            data-toggle="tooltip"
+            data-placement="top"
+            title="Delete"
+          >
+            <i class="fas fa-trash"></i>
+          </button>
+        </form>
+      </span>
+      <% } %>
+    </div>
+    <hr class="m-0 p-0" />
+    <div class="collapse show" id="collapse<%= comment._id %>">
+      <div class="px-3 pt-3"><%- filterUserHTML(comment.comment) %></div>
+    </div>
+    <% if (comment.isVisitorsComment) { %>
+    <div class="collapse" id="collapse<%= comment._id %>">
+      <form
+        class="form-inline"
+        action="/post/<%= post._id %>/<%= comment._id %>/updateComment"
+        method="POST"
+      >
+        <textarea
+          id="ident<%= comment._id %>"
+          required
+          name="body"
+          type="text"
+          class="pb-cmnt-textarea mb-1"
+        >
+<%= comment.comment %></textarea
+        >
+        <button
+          type="button"
+          class="btn btn-danger mr-2"
+          data-toggle="collapse"
+          data-target="#collapse<%= comment._id %>"
+        >
+          Cancel
+        </button>
+        <input type="hidden" name="_csrf" value="<%= csrfToken %>" />
+        <button class="btn btn-primary">Submit</button>
+      </form>
+    </div>
+    <% } %>
+  </div>
+  <% }) %>
+</div>

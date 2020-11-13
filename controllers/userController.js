@@ -2,6 +2,7 @@ const User = require("../models/User");
 const Post = require("../models/Post");
 const Follow = require("../models/Follow");
 const Like = require("../models/Like");
+const Comment = require("../models/Comment");
 const jwt = require("jsonwebtoken");
 
 exports.login = function (req, res) {
@@ -76,6 +77,10 @@ exports.home = async function (req, res) {
   if (req.session.user) {
     // fetch feed of posts for current user
     let posts = await Post.getFeed(req.session.user._id);
+    if (posts.length) {
+      posts = await Like.getLikesPerPost(posts);
+      posts = await Comment.getCommentsPerPost(posts);
+    }
     res.render("home-dashboard", {
       posts: posts,
     });
@@ -120,6 +125,8 @@ exports.ifUserExists = function (req, res, next) {
 exports.profilePostsScreen = function (req, res) {
   // ask out post model for posts by a certain author id
   Post.findByAuthorId(req.profileUser._id)
+    .then((posts) => Like.getLikesPerPost(posts))
+    .then((posts) => Comment.getCommentsPerPost(posts))
     .then(function (posts) {
       res.render("profile", {
         title: `${req.profileUser.username}'s profile`,

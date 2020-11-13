@@ -38,6 +38,9 @@ Post.prototype.validate = function () {
   if (this.data.title == "") {
     this.errors.push("You must provide a title.");
   }
+  if (this.data.title.length > 30) {
+    this.errors.push("Title cannot exceed 30 characters.");
+  }
   if (this.data.body == "") {
     this.errors.push("You must provide post content.");
   }

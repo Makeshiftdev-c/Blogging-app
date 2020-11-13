@@ -16,6 +16,9 @@
         post.createdDate.getMonth() + 1 %>/<%= post.createdDate.getFullYear()
         %></span
       >
+      <span class="float-right mt-1 small text-muted"
+        >Likes: <%= post.likeCount %> | Comments: <%= post.commentCount %></span
+      >
     </a>
     <% }) %>
   </div>

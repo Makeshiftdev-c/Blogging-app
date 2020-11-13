@@ -1,5 +1,6 @@
 const Post = require("../models/Post");
 const Like = require("../models/Like");
+const Comment = require("../models/Comment");
 
 exports.sharedPostData = function (req, res, next) {
   Post.findSingleById(req.params.id, req.visitorId)
@@ -10,6 +11,9 @@ exports.sharedPostData = function (req, res, next) {
       }
 
       req.isLiking = isLiking;
+
+      let commentCount = await Comment.countCommentsByPostId(req.params.id);
+      req.commentCount = commentCount;
       next();
     })
     .catch(() => {
@@ -52,11 +56,17 @@ exports.apiCreate = function (req, res) {
 exports.viewSingle = async function (req, res) {
   try {
     let post = await Post.findSingleById(req.params.id, req.visitorId);
+    let comments = await Comment.getCommentsByPostId(
+      req.params.id,
+      req.visitorId
+    );
     res.render("single-post-screen", {
       post: post,
       title: post.title,
       user: req.session.user,
       isLiking: req.isLiking,
+      commentCount: req.commentCount,
+      comments: comments,
     });
   } catch {
     res.render("404");

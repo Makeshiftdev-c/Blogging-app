@@ -28,7 +28,6 @@ export default class Likes {
         _csrf: this._csrf,
       })
       .then((response) => {
-        console.log(response.data);
         this.renderResultsHTML(response.data);
       })
       .catch(() => {

@@ -10,9 +10,12 @@
       class="list-group-item list-group-item-action"
     >
       <img class="avatar-tiny" src="<%= post.author.avatar %>" />
-      <strong><%= post.title %></strong> on <%= post.createdDate.getDate()
-      %>/<%= post.createdDate.getMonth() + 1 %>/<%=
-      post.createdDate.getFullYear() %>
+      <strong><%= post.title %></strong>
+      on <%= post.createdDate.getDate() %>/<%= post.createdDate.getMonth() + 1
+      %>/<%= post.createdDate.getFullYear() %>
+      <span class="float-right mt-1 small text-muted"
+        >Likes: <%= post.likeCount %> | Comments: <%= post.commentCount %></span
+      >
     </a>
     <% }) %>
   </div>

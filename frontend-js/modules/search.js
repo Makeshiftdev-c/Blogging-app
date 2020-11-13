@@ -79,7 +79,6 @@ export default class Search {
     axios
       .post("/search", { searchTerm: this.inputField.value, _csrf: this._csrf })
       .then((response) => {
-        console.log(response.data);
         this.renderResultsHTML(response.data);
       })
       .catch(() => {
@@ -127,7 +126,7 @@ export default class Search {
     <div class="search-overlay-top shadow-sm">
       <div class="container container--narrow">
         <label for="live-search-field" class="search-overlay-icon"><i class="fas fa-search"></i></label>
-        <input type="text" id="live-search-field" class="live-search-field" placeholder="What are you interested in?">
+        <input type="text" id="live-search-field" class="live-search-field" placeholder="What are you interested in?" autocomplete="off">
         <span class="close-live-search"><i class="fas fa-times-circle gold"></i></span>
       </div>
     </div>

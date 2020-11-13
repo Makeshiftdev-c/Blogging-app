@@ -182,4 +182,16 @@ Like.findLikeUsers = function (postId) {
   });
 };
 
+Like.getLikesPerPost = function (posts) {
+  postsPromise = posts.map(async (post) => {
+    let likeCount = await likesCollection.countDocuments({
+      likedPostId: new ObjectID(post._id),
+    });
+    post.likeCount = likeCount;
+    return post;
+  });
+
+  return Promise.all(postsPromise);
+};
+
 module.exports = Like;
